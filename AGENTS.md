@@ -8,3 +8,5 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+- Brand contact details (WhatsApp, Instagram) live in src/lib/site.ts and the demo catalogue in src/lib/products.ts — edit there so every page updates.
