@@ -27,37 +27,29 @@ export function BespokeForm({ initialType = "" }: { initialType?: string }) {
     window.open(waLink(bespokeMessage(v)), "_blank", "noopener");
   };
 
-  const Field = ({ id, label, children }: { id: keyof BespokeEnquiry; label: string; children: React.ReactNode }) => (
-    <div>
-      <label htmlFor={id} className="eyebrow block text-muted-foreground">{label} *</label>
-      {children}
-      {errors[id] && <p role="alert" className="mt-1 text-xs text-destructive">{errors[id]}</p>}
-    </div>
-  );
-
   return (
     <form onSubmit={submit} noValidate className="grid gap-8 md:grid-cols-2">
-      <Field id="name" label="Full Name"><input id="name" className="field-luxe" value={v.name} onChange={set("name")} autoComplete="name" /></Field>
-      <Field id="phone" label="WhatsApp Number"><input id="phone" type="tel" inputMode="tel" className="field-luxe" placeholder="+91 98765 43210" value={v.phone} onChange={set("phone")} autoComplete="tel" /></Field>
-      <Field id="type" label="Jewellery Type">
+      <Field errors={errors} id="name" label="Full Name"><input id="name" className="field-luxe" value={v.name} onChange={set("name")} autoComplete="name" /></Field>
+      <Field errors={errors} id="phone" label="WhatsApp Number"><input id="phone" type="tel" inputMode="tel" className="field-luxe" placeholder="+91 98765 43210" value={v.phone} onChange={set("phone")} autoComplete="tel" /></Field>
+      <Field errors={errors} id="type" label="Jewellery Type">
         <select id="type" className="field-luxe" value={v.type} onChange={set("type")}>
           <option value="">Select…</option>{TYPES.map((t) => <option key={t}>{t}</option>)}
         </select>
       </Field>
-      <Field id="material" label="Preferred Material">
+      <Field errors={errors} id="material" label="Preferred Material">
         <select id="material" className="field-luxe" value={v.material} onChange={set("material")}>
           <option value="">Select…</option>{MATERIALS.map((t) => <option key={t}>{t}</option>)}
         </select>
       </Field>
       <div className="md:col-span-2">
-        <Field id="budget" label="Budget Range">
+        <Field errors={errors} id="budget" label="Budget Range">
           <select id="budget" className="field-luxe" value={v.budget} onChange={set("budget")}>
             <option value="">Select…</option>{BUDGETS.map((t) => <option key={t}>{t}</option>)}
           </select>
         </Field>
       </div>
       <div className="md:col-span-2">
-        <Field id="description" label="Design Description">
+        <Field errors={errors} id="description" label="Design Description">
           <textarea id="description" rows={4} className="field-luxe resize-none" placeholder="Occasion, inspiration, stones, sizing, timeline…" value={v.description} onChange={set("description")} />
         </Field>
       </div>
@@ -66,5 +58,15 @@ export function BespokeForm({ initialType = "" }: { initialType?: string }) {
         <p className="mt-3 text-xs text-muted-foreground">Opens WhatsApp with your details pre-filled. Nothing is stored on this site.</p>
       </div>
     </form>
+  );
+}
+
+function Field({ id, label, errors, children }: { id: keyof BespokeEnquiry; label: string; errors: Partial<Record<keyof BespokeEnquiry, string>>; children: React.ReactNode }) {
+  return (
+    <div>
+      <label htmlFor={id} className="eyebrow block text-muted-foreground">{label} *</label>
+      {children}
+      {errors[id] && <p role="alert" className="mt-1 text-xs text-destructive">{errors[id]}</p>}
+    </div>
   );
 }
